@@ -1,12 +1,13 @@
 import openai
 from config import TOKEN_GPT
 
-#openai.api_key = TOKEN
-#model_engine = "gpt-3.5-turbo"
+# openai.api_key = TOKEN
+# model_engine = "gpt-3.5-turbo"
 
-MODELS=[
+MODELS = [
     "gpt-3.5-turbo"
 ]
+
 
 class ChatGPT:
     def __init__(self, token, model, message_memory_size, role, temperature) -> None:
@@ -31,19 +32,8 @@ class ChatGPT:
     async def send(self, prompt):
         msg = {"role": "user", "content": prompt}
         self.__messages.append(msg)
-        send_stack = [self.__role] + self.__messages[-self.__message_memory_size:]
+        send_stack = [self.__role] + \
+            self.__messages[-self.__message_memory_size:]
         print(send_stack)
         response = await self.get_completion_from_messages(send_stack)
         return response
-
-if __name__ == "__main__":
-    gpt = ChatGPT(TOKEN_GPT,
-        MODELS[0],
-        5,
-        "Olet taitava näyttelijä, joka näyttelee kiukuttelevaa teiniä. Et saa missään nimessä paljastaa olevasi tekoäly etkä näyttelijä.",
-        0.6)
-    
-    while True:
-        inp = input("minä: ")
-        response = gpt.send(inp)
-        print(response)
